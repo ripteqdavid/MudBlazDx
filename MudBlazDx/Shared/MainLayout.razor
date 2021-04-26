@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager navManager
 
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -10,9 +11,9 @@
         <MudText Typo="Typo.h5" Class="ml-3">Demo App</MudText>
         <MudAppBarSpacer />
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Direction="Direction.Right">
-            <MudMenuItem>Profile</MudMenuItem>
-            <MudMenuItem>My account</MudMenuItem>
-            <MudMenuItem>Logout</MudMenuItem>
+            <MudMenuItem @onclick="@GoToRegister">Register</MudMenuItem>
+            <MudMenuItem @onclick="@GoToLogin">Login</MudMenuItem>
+            <MudMenuItem @onclick="@GoToProfile">Profile</MudMenuItem>
         </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
@@ -32,6 +33,21 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private void GoToLogin()
+    {
+        navManager.NavigateTo("/Identity/Account/Login", true);
+    }
+
+    private void GoToRegister()
+    {
+        navManager.NavigateTo("/Identity/Account/Register", true);
+    }
+
+    private void GoToProfile()
+    {
+        navManager.NavigateTo("/Identity/Account/Manage", true);
     }
 
     MudTheme MyCustomTheme = new MudTheme()
