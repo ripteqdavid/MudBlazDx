@@ -1,0 +1,80 @@
+﻿@page "/fetchdata"
+
+@using MudBlazDx.Data
+@inject WeatherForecastService ForecastService
+@inject ISnackbar Snackbar
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Weather Forecast</MudText>
+
+    @if (forecasts == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="6">
+
+                <MudTable Items="@forecasts" Hover="true" SortLabel="Sort By">
+                    <HeaderContent>
+                        <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp C</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">Temp F</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary)">Summary</MudTableSortLabel></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Date">@context.Date</MudTd>
+                        <MudTd DataLabel="Temp C">@context.TemperatureC</MudTd>
+                        <MudTd DataLabel="Temp F">@context.TemperatureF</MudTd>
+                        <MudTd DataLabel="Summary">@context.Summary</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                    </PagerContent>
+                </MudTable>
+            </MudItem>
+
+            <MudItem xs="6">
+
+                <DxDataGrid Data="@forecasts" ShowGroupPanel="true" ShowPager="true" ShowFilterRow="true" EditMode="DataGridEditMode.PopupEditForm">
+                    <DxDataGridCommandColumn Width="100px" />
+                    <DxDataGridDateEditColumn Field="@nameof(WeatherForecast.Date)"
+                                              DisplayFormat="dd-MMM-yyyy"
+                                              EditorFormat="dd-MMM-yyyy" Width="25%" />
+                    <DxDataGridSpinEditColumn Field="@nameof(WeatherForecast.TemperatureC)"
+                                              Caption="Temp C"
+                                              TextAlignment="DataGridTextAlign.Left"
+                                              Width="25%" />
+                    <DxDataGridSpinEditColumn Field="@nameof(WeatherForecast.TemperatureF)"
+                                              Caption="Temp F"
+                                              TextAlignment="DataGridTextAlign.Left"
+                                              Width="25%" />
+                    <DxDataGridColumn Field="@nameof(WeatherForecast.Summary)" Width="25%" />
+                </DxDataGrid>
+            </MudItem>
+            <MudItem xs="6">
+                <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" />
+                <MudFab Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" />
+                <MudFab Color="Color.Tertiary" Icon="@Icons.Material.Filled.ShoppingCart" DisableElevation="true" />
+                <MudFab Icon="@Icons.Material.Filled.Navigation" Label="Navigation" />
+                <MudFab Icon="@Icons.Material.Filled.Save" Disabled="true" />
+            </MudItem>
+            <MudItem xs="6">
+                <DxButton RenderStyle="ButtonRenderStyle.Primary" RenderStyleMode="ButtonRenderStyleMode.Contained" Text="Button One" SizeMode="SizeMode.Small" />
+                <DxButton RenderStyle="ButtonRenderStyle.Danger" RenderStyleMode="ButtonRenderStyleMode.Outline" Text="Button Two" SizeMode="SizeMode.Medium" />
+                <DxButton RenderStyle="ButtonRenderStyle.Dark" RenderStyleMode="ButtonRenderStyleMode.Contained" Text="Button Three" SizeMode="SizeMode.Large" />
+            </MudItem>
+        </MudGrid>
+
+    }
+</MudContainer>
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}
