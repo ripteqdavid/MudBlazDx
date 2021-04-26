@@ -16,7 +16,7 @@
         <MudGrid>
             <MudItem xs="6">
 
-                <MudTable Items="@forecasts" Hover="true" SortLabel="Sort By">
+                <MudTable Items="@forecasts" Hover="true" SortLabel="Sort By" Dense="true">
                     <HeaderContent>
                         <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp C</MudTableSortLabel></MudTh>
@@ -37,7 +37,7 @@
 
             <MudItem xs="6">
 
-                <DxDataGrid Data="@forecasts" ShowGroupPanel="true" ShowPager="true" ShowFilterRow="true" EditMode="DataGridEditMode.PopupEditForm">
+                <DxDataGrid Data="@forecasts" ShowPager="true" ShowFilterRow="false" EditMode="DataGridEditMode.PopupEditForm">
                     <DxDataGridCommandColumn Width="100px" />
                     <DxDataGridDateEditColumn Field="@nameof(WeatherForecast.Date)"
                                               DisplayFormat="dd-MMM-yyyy"
